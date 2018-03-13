@@ -29,7 +29,6 @@ function addCoffee(e, name, roast) {
     };
 
     coffees.push(coffee);
-    console.log(coffees.length);
     updateCoffees(e);
     updateStoredCoffee(coffees);
 
