@@ -1,4 +1,4 @@
-# Coffee Project
+# Coffee Project --- TEST
 
 Congratulations! You have landed your first development job! You have inherited
 a project from Fancy Coffee Company&copy;, and they want you to make
@@ -11,6 +11,7 @@ improvements to it.
 1. Clone the forked repository
 1. Open up the html file and check out the existing application
 1. Read through the code and understand the existing code structure
+
 
 ## TODO
 
