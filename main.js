@@ -10,10 +10,45 @@ function renderCoffee(coffee) {
 
 function renderCoffees(coffees) {
     var html = '';
-    for(var i = coffees.length - 1; i >= 0; i--) {
+    for(var i = 0; i < coffees.length; i++) {
         html += renderCoffee(coffees[i]);
     }
     return html;
+}
+
+function addCoffee(e, name, roast) {
+    e.preventDefault();
+    var name = (name !== undefined) ? name : document.querySelector('#add-coffee-name').value;
+    var roast = (roast !== undefined) ? roast : document.querySelector('#add-roast-selection').value;
+    var id = coffees.length+1;
+
+    var coffee = {
+        id: id,
+        name: name,
+        roast: roast
+    };
+
+    coffees.push(coffee);
+    console.log(coffees.length);
+    updateCoffees(e);
+    updateStoredCoffee(coffees);
+
+}
+
+function updateStoredCoffee(coffees){
+    var string = JSON.stringify(coffees);
+    localStorage.setItem('coffees', string);
+}
+
+function resetCoffeeList(e) {
+    e.preventDefault();
+    var confirmReset = confirm("Would you like to remove user settings?");
+    if (confirmReset === true) {
+        localStorage.removeItem('coffees');
+        coffees = Array.from(coffeeDefault);
+        updateCoffees(e);
+
+    }
 }
 
 function updateCoffees(e) {
@@ -33,9 +68,10 @@ function updateCoffees(e) {
     });
     divbody.innerHTML = renderCoffees(filteredCoffees);
 }
-(0)
 // from http://www.ncausa.org/About-Coffee/Coffee-Roasts-Guide
-var coffees = [
+var userCoffees = JSON.parse(localStorage.getItem("coffees") || "[]");
+
+var coffeeDefault = [
     {id: 1, name: 'Light City', roast: 'light'},
     {id: 2, name: 'Half City', roast: 'light'},
     {id: 3, name: 'Cinnamon', roast: 'light'},
@@ -52,14 +88,20 @@ var coffees = [
     {id: 14, name: 'French', roast: 'dark'},
 ];
 
+var coffees = Array.from(coffeeDefault);
+
+coffees = (userCoffees.length === 0) ? coffees : Array.from(userCoffees);
+
 var divbody = document.querySelector('#coffees');
 var submitButton = document.querySelector('#submit');
 var roastSelection = document.querySelector('#roast-selection');
 var coffeeName  = document.querySelector('#coffee-name');
-
-
+var addCoffees  = document.querySelector('#add-coffee');
+var resetCoffee = document.querySelector('#reset-coffee');
 divbody.innerHTML = renderCoffees(coffees);
 
 submitButton.addEventListener('click', updateCoffees);
 roastSelection.addEventListener('change', updateCoffees);
 coffeeName.addEventListener('input', updateCoffees);
+resetCoffee.addEventListener('click', resetCoffeeList);
+addCoffees.addEventListener('click', addCoffee);
